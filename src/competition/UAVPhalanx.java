@@ -2,28 +2,21 @@ package competition;
 
 import java.util.*;
 
+/**
+ * 无人机方阵 比赛题
+ */
 public class UAVPhalanx {
     public int minimumSwitchingTimes(int[][] source, int[][] target) {
-        if (source.length == 0){
-            return 0;
+        int n=source.length,m=source[0].length,sum=0;
+        int[] p=new int[10005];
+        for(int i=0;i<n*m;i++){
+            p[source[i/m][i%m]]++;
+            p[target[i/m][i%m]]--;
         }
-        int res = 0;
-        ArrayList<Integer> sourceList = new ArrayList<>();
-        ArrayList<Integer> targetList = new ArrayList<>();
-        for (int i = 0; i < target.length; i++) {
-            for (int j = 0; j < target[0].length; j++) {
-                sourceList.add(source[i][j]);
-                targetList.add(target[i][j]);
-            }
+        for(int i=0;i<10005;i++){
+            if(p[i]>0) sum+=p[i];
         }
-        for (int i = 0; i < sourceList.size(); i++) {
-            if (targetList.contains(sourceList.get(i))){
-                targetList.remove(sourceList.get(i));
-            }else {
-                res++;
-            }
-        }
-        return res;
+        return sum;
     }
 
     public static void main(String[] args) {
