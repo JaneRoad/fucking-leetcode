@@ -1,4 +1,4 @@
-package greddy;
+package greedy;
 
 public class IntegerReplacement {
     public int integerReplacement(int n) {
