@@ -8,11 +8,11 @@ public class LetterCombinationsOfAPhoneNumber {
         if (digits.length() == 0) {
             return combinations;
         }
-        Map<Character, String> phoneMap = Map.of(
-                '2', "abc", '3', "def", '4', "ghi", '5', "jkl",
-                '6', "mno", '7', "pqrs", '8', "tuv", '9', "wxyz"
-        );
-
+//        Map<Character, String> phoneMap = Map.of(
+//                '2', "abc", '3', "def", '4', "ghi", '5', "jkl",
+//                '6', "mno", '7', "pqrs", '8', "tuv", '9', "wxyz"
+//        );
+        Map<Character, String> phoneMap = new HashMap<>();
         backtrack(combinations, phoneMap, digits, 0, new StringBuffer());
         return combinations;
     }
