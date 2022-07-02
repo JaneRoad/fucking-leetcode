@@ -1,4 +1,4 @@
-package breadthFirstSearch;
+package tree;
 
 import common.TreeNode;
 

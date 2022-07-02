@@ -1,4 +1,4 @@
-package depthFirstSearch;
+package tree;
 
 import common.TreeNode;
 
