@@ -4,48 +4,84 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 51. N 皇后
+ */
 public class NQueens {
+    List<List<String>> res = new ArrayList<>();
+
     public List<List<String>> solveNQueens(int n) {
+        // 记录「路径」
         char[][] board = new char[n][n];
-        List<List<String>> lists = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             Arrays.fill(board[i], '.');
         }
-        backtrack(lists, board, n, 0);
-        return lists;
+
+        backtrack(res, board, n, 0);
+        return res;
     }
 
-    public void backtrack(List<List<String>> lists, char[][] board, int n, int t) {
-        if (t == n) { // 已经放置了n个皇后
+    /**
+     * 路径：记录在 board 中
+     * 选择列表： 第 row 行的所有列都是放置皇后的选择
+     * 结束条件：row 超过 board 的最后一行
+     *
+     * @param res
+     * @param board
+     * @param n
+     * @param row
+     */
+    public void backtrack(List<List<String>> res, char[][] board, int n, int row) {
+        // 已经放置了n个皇后-触发结束条件
+        if (row == n) {
             List<String> list = new ArrayList<>();
             for (int i = 0; i < n; i++) {
                 list.add(String.valueOf(board[i]));
             }
-            lists.add(list);
+            res.add(list);
             return;
         }
-        for (int i = 0; i < n; i++) {
-            if (check(board, t, i, n)) { // 判断当前位置是否可以放置皇后
-                board[t][i] = 'Q';
-                backtrack(lists, board, n, t + 1);
-                board[t][i] = '.';
+        for (int col = 0; col < n; col++) {
+            // 判断当前位置是否可以放置皇后-排除不合法的选择
+            if (!isValid(board, row, col, n)) {
+                continue;
             }
+            // 做选择-放棋子
+            board[row][col] = 'Q';
+            // 进入下一层决策树
+            backtrack(res, board, n, row + 1);
+            // 取消选择
+            board[row][col] = '.';
         }
     }
 
-    public boolean check(char[][] board, int i, int j, int n) {
-        // each row is only one queen（行不需要判断，每行只能有一个皇后）
-        // col（判断列）
-        for (int k = 0; k < i; k++) {
-            if (board[k][j] == 'Q') return false;
+    /**
+     * 判断当前位置是否可以放置皇后
+     *
+     * @param board
+     * @param row
+     * @param col
+     * @param n
+     * @return
+     */
+    public boolean isValid(char[][] board, int row, int col, int n) {
+        // 行不需要判断，每行只能有一个皇后
+
+        // 判断列
+        for (int cur = 0; cur < row; cur++) {
+            if (board[cur][col] == 'Q') return false;
         }
 
-        // diagonal（对角线判断）
-        for (int k = 1; k < n; k++) {
+        // 对角线判断
+        for (int cur = 1; cur < n; cur++) {
             // 主对角线
-            if (i - k >= 0 && j - k >= 0 && board[i - k][j - k] == 'Q') return false;
+            if (row - cur >= 0 && col - cur >= 0 && board[row - cur][col - cur] == 'Q') {
+                return false;
+            }
             // 副对角线
-            if (i - k >= 0 && j + k < n && board[i - k][j + k] == 'Q') return false;
+            if (row - cur >= 0 && col + cur < n && board[row - cur][col + cur] == 'Q') {
+                return false;
+            }
         }
 
         return true;

@@ -1,39 +1,60 @@
 package backtracking;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 46. 全排列
+ */
 public class Permutations {
+    List<List<Integer>> res = new LinkedList<>();
+
+    /**
+     * 主函数，输入一组不重复的数字，返回它们的全排列
+     *
+     * @param nums
+     * @return
+     */
     public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        // 记录「路径」
+        LinkedList<Integer> track = new LinkedList<>();
+        // 「路径」中的元素会被标记为 true，避免重复使用
+        boolean[] used = new boolean[nums.length];
 
-        List<Integer> output = new ArrayList<Integer>();
-        for (int num : nums) {
-            output.add(num);
-        }
-
-        int n = nums.length;
-        backtrack(n, output, res, 0);
+        backtrack(nums, track, used);
         return res;
     }
 
-    public void backtrack(int n, List<Integer> output, List<List<Integer>> res, int first) {
-        // 所有数都填完了
-        if (first == n) {
-            res.add(new ArrayList<Integer>(output));
+    /**
+     * 路径：记录在 track 中
+     * 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
+     * 结束条件：nums 中的元素全都在 track 中出现
+     *
+     * @param nums
+     * @param track
+     * @param used
+     */
+    public void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
+        // 触发结束条件
+        if (track.size() == nums.length) {
+            res.add(new LinkedList<>(track));
+            return;
         }
-        for (int i = first; i < n; i++) {
-            // 动态维护数组
-            Collections.swap(output, first, i);
-            // 继续递归填下一个数
-            backtrack(n, output, res, first + 1);
-            // 撤销操作
-            Collections.swap(output, first, i);
+
+        for (int i = 0; i < nums.length; i++) {
+            // 排除不合法的选择
+            if (used[i]) {
+                // nums[i] 已经在 track 中，跳过
+                continue;
+            }
+            // 做选择
+            track.add(nums[i]);
+            used[i] = true;
+            // 进入下一层决策树
+            backtrack(nums, track, used);
+            // 取消选择
+            track.removeLast();
+            used[i] = false;
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }
