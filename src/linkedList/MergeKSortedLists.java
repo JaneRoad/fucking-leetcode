@@ -5,39 +5,52 @@ import common.ListNode;
 import java.util.PriorityQueue;
 
 public class MergeKSortedLists {
-    class Status implements Comparable<Status> {
-        int val;
-        ListNode ptr;
-
-        Status(int val, ListNode ptr) {
-            this.val = val;
-            this.ptr = ptr;
-        }
-
-        public int compareTo(Status status2) {
-            return this.val - status2.val;
-        }
-    }
-
-    PriorityQueue<Status> queue = new PriorityQueue<Status>();
-
     public ListNode mergeKLists(ListNode[] lists) {
-        for (ListNode node: lists) {
-            if (node != null) {
-                queue.offer(new Status(node.val, node));
+        if (lists.length == 0) {
+            return null;
+        }
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1);
+        ListNode p = dummy;
+        // 优先级队列，最小堆
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(
+                lists.length, (a, b)->(a.val - b.val));
+        // 将 k 个链表的头结点加入最小堆
+        for (ListNode head : lists) {
+            if (head != null) {
+                pq.add(head);
             }
         }
-        ListNode head = new ListNode(0);
-        ListNode tail = head;
-        while (!queue.isEmpty()) {
-            Status f = queue.poll();
-            tail.next = f.ptr;
-            tail = tail.next;
-            if (f.ptr.next != null) {
-                queue.offer(new Status(f.ptr.next.val, f.ptr.next));
+
+        while (!pq.isEmpty()) {
+            // 获取最小节点，接到结果链表中
+            ListNode node = pq.poll();
+            p.next = node;
+            if (node.next != null) {
+                pq.add(node.next);
             }
+            // p 指针不断前进
+            p = p.next;
         }
-        return head.next;
+        return dummy.next;
     }
 
+
+    public static void main(String[] args) {
+        //1,4,5
+        ListNode a = new ListNode(1);
+        a.next = new ListNode(4);
+        a.next.next = new ListNode(5);
+        //1,3,4
+        ListNode b = new ListNode(1);
+        b.next = new ListNode(3);
+        b.next.next = new ListNode(4);
+        //2,6
+        ListNode c = new ListNode(2);
+        c.next = new ListNode(6);
+
+        ListNode[] lists = new ListNode[]{a,b,c};
+        MergeKSortedLists mergeKSortedLists = new MergeKSortedLists();
+        ListNode listNode = mergeKSortedLists.mergeKLists(lists);
+    }
 }

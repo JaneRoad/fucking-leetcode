@@ -2,22 +2,35 @@ package linkedList;
 
 import common.ListNode;
 
+/**
+ * 21. 合并两个有序链表
+ * @author janeroad
+ */
 public class MergeTwoSortedLists {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode prehead = new ListNode(-1);
-        ListNode prev = prehead;
-        while (l1 != null && l2 != null) {
-            if (l1.val <= l2.val) {
-                prev.next = l1;
-                l1 = l1.next;
-            } else {
-                prev.next = l2;
-                l2 = l2.next;
+        ListNode dummy = new ListNode(-1);
+        ListNode tmp = dummy;
+        ListNode p1 = l1;
+        ListNode p2 = l2;
+
+        while (p1 != null && p2 != null){
+            if (p1.val > p2.val){
+                tmp.next = p2;
+                p2 = p2.next;
+            }else {
+                tmp.next = p1;
+                p1 = p1.next;
             }
-            prev = prev.next;
+            tmp = tmp.next;
         }
-        // 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
-        prev.next = l1 == null ? l2 : l1;
-        return prehead.next;
+
+        if (p1 != null){
+            tmp.next = p1;
+        }
+        if (p2 != null){
+            tmp.next = p2;
+        }
+
+        return dummy.next;
     }
 }
