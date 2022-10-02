@@ -4,6 +4,10 @@ import common.ListNode;
 
 import java.util.PriorityQueue;
 
+/**
+ * 23. 合并K个升序链表
+ * @author janeroad
+ */
 public class MergeKSortedLists {
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists.length == 0) {

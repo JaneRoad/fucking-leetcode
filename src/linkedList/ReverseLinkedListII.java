@@ -2,6 +2,9 @@ package linkedList;
 
 import common.ListNode;
 
+/**
+ * @author janeroad
+ */
 public class ReverseLinkedListII {
     public ListNode reverseBetween(ListNode head, int left, int right) {
         // 设置 dummyNode 是这一类问题的一般做法

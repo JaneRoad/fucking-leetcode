@@ -2,20 +2,41 @@ package twoPointers;
 
 import common.ListNode;
 
+/**
+ * 19. 删除链表的倒数第 N 个结点
+ * @author janeroad
+ */
 public class RemoveNthNodeFromEndOfList {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode dummy = new ListNode(0, head);
-        ListNode first = head;
-        ListNode second = dummy;
-        for (int i = 0; i < n; ++i) {
-            first = first.next;
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        // 删除倒数第 n 个，要先找倒数第 n + 1 个节点
+        ListNode x = findFromEnd(dummy, n + 1);
+        // 删掉倒数第 n 个节点
+        x.next = x.next.next;
+        return dummy.next;
+    }
+
+    /**
+     * 返回链表的倒数第 k 个节点
+     * @param head 头结点
+     * @param k
+     * @return
+     */
+    ListNode findFromEnd(ListNode head, int k) {
+        ListNode p1 = head;
+        // p1 先走 k 步
+        for (int i = 0; i < k; i++) {
+            p1 = p1.next;
         }
-        while (first != null) {
-            first = first.next;
-            second = second.next;
+        ListNode p2 = head;
+        // p1 和 p2 同时走 n - k 步
+        while (p1 != null) {
+            p2 = p2.next;
+            p1 = p1.next;
         }
-        second.next = second.next.next;
-        ListNode ans = dummy.next;
-        return ans;
+        // p2 现在指向第 n - k + 1 个节点，也就是倒数第K个节点
+        return p2;
     }
 }
