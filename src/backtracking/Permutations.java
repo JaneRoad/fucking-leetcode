@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * 46. 全排列
+ * @author janeroad
  */
 public class Permutations {
     List<List<Integer>> res = new LinkedList<>();
@@ -26,13 +27,9 @@ public class Permutations {
     }
 
     /**
-     * 路径：记录在 track 中
-     * 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
-     * 结束条件：nums 中的元素全都在 track 中出现
-     *
-     * @param nums
-     * @param track
-     * @param used
+     * @param nums 结束条件：nums 中的元素全都在 track 中出现
+     * @param track 路径：记录在 track 中
+     * @param used 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
      */
     public void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
         // 触发结束条件

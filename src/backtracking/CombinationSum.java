@@ -1,31 +1,64 @@
 package backtracking;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 39. 组合总和
+ * @author janeroad
+ */
 public class CombinationSum {
+    List<List<Integer>> res = new LinkedList<>();
+
+    /**
+     * 记录回溯算法的递归路径
+     */
+    LinkedList<Integer> track = new LinkedList<>();
+
+    /**
+     * 回溯算法主函数
+     * @param candidates 题目的输入数组
+     * @param target 题目规定的总和target
+     */
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> ans = new ArrayList<>();
-        List<Integer> combine = new ArrayList<>();
-        dfs(candidates, target, ans, combine, 0);
-        return ans;
+        if (candidates.length == 0) {
+            return res;
+        }
+        backtrack(candidates, 0, target, 0);
+        return res;
     }
 
-    public void dfs(int[] candidates, int target, List<List<Integer>> ans, List<Integer> combine, int idx) {
-        if (idx == candidates.length) {
+
+
+    /**
+     * 回溯算法核心函数
+     * @param candidates nums本次遍历开始位置
+     * @param start nums本次遍历开始位置
+     * @param target 题目规定的总和target
+     * @param sum 当前路径和
+     */
+    void backtrack(int[] candidates, int start, int target, int sum) {
+        if (sum == target) {
+            // 找到目标和
+            res.add(new LinkedList<>(track));
             return;
         }
-        if (target == 0) {
-            ans.add(new ArrayList<>(combine));
+
+        if (sum > target) {
+            // 超过目标和，直接结束
             return;
         }
-        // 直接跳过
-        dfs(candidates, target, ans, combine, idx + 1);
-        // 选择当前数
-        if (target - candidates[idx] >= 0) {
-            combine.add(candidates[idx]);
-            dfs(candidates, target - candidates[idx], ans, combine, idx);
-            combine.remove(combine.size() - 1);
+
+        // 回溯算法框架
+        for (int i = start; i < candidates.length; i++) {
+            // 选择 candidates[i]
+            track.add(candidates[i]);
+            sum += candidates[i];
+            // 递归遍历下一层回溯树
+            backtrack(candidates, i, target, sum);
+            // 撤销选择 candidates[i]
+            sum -= candidates[i];
+            track.removeLast();
         }
     }
 }
