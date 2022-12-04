@@ -2,24 +2,41 @@ package tree;
 
 import common.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * 111. 二叉树的最小深度
+ * @author janeroad
+ */
 public class MinimumDepthOfBinaryTree {
     public int minDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
+        if (root == null) return 0;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        // root 本身就是一层，depth 初始化为 1
+        int depth = 1;
 
-        if (root.left == null && root.right == null) {
-            return 1;
+        while (!q.isEmpty()) {
+            int sz = q.size();
+            /* 遍历当前层的节点 */
+            for (int i = 0; i < sz; i++) {
+                TreeNode cur = q.poll();
+                /* 判断是否到达叶子结点 */
+                if (cur.left == null && cur.right == null) {
+                    return depth;
+                }
+                /* 将下一层节点加入队列 */
+                if (cur.left != null) {
+                    q.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    q.offer(cur.right);
+                }
+            }
+            /* 这里增加步数 */
+            depth++;
         }
-
-        int min_depth = Integer.MAX_VALUE;
-        if (root.left != null) {
-            min_depth = Math.min(minDepth(root.left), min_depth);
-        }
-        if (root.right != null) {
-            min_depth = Math.min(minDepth(root.right), min_depth);
-        }
-
-        return min_depth + 1;
+        return depth;
     }
 }
