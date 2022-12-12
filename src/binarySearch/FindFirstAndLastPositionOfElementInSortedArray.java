@@ -1,15 +1,15 @@
-package array;
+package binarySearch;
 
 /**
  * 34. 在排序数组中查找元素的第一个和最后一个位置
+ * @author janeroad
  */
 public class FindFirstAndLastPositionOfElementInSortedArray {
-
     public int[] searchRange(int[] nums, int target) {
         return new int[]{leftBound(nums, target), rightBound(nums, target)};
     }
 
-    public int leftBound(int[] nums, int target) {
+    int leftBound(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         // 搜索区间为 [left, right]
         while (left <= right) {
@@ -32,7 +32,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         return left;
     }
 
-    public int rightBound(int[] nums, int target) {
+    int rightBound(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         while (left <= right) {
             int mid = left + (right - left) / 2;
@@ -45,7 +45,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
                 left = mid + 1;
             }
         }
-        // 这里改为检查 right 越界的情况，见下图
+        // 这里改为检查 right 越界的情况
         if (right < 0 || nums[right] != target) {
             return -1;
         }
@@ -55,7 +55,10 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     public static void main(String[] args) {
         int[] arr= new int[]{5,7,7,8,8,10};
         FindFirstAndLastPositionOfElementInSortedArray f = new FindFirstAndLastPositionOfElementInSortedArray();
-        f.searchRange(arr,8);
+        int[] ints = f.searchRange(arr, 8);
+        for (int anInt : ints) {
+            System.out.println(anInt);
+        }
     }
 
 }
