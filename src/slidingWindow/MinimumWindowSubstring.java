@@ -1,18 +1,14 @@
 package slidingWindow;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
- * 438. 找到字符串中所有字母异位词
+ * 76. 最小覆盖子串
+ *
  * @author janeroad
  */
-public class FindAllAnagramsInAString {
-    public List<Integer> findAnagrams(String s, String t) {
-
-        List<Integer> res = new ArrayList<>();
-
+public class MinimumWindowSubstring {
+    public String minWindow(String s, String t) {
         // 记录要求的字符串所有字符count 以及 滑动窗口window中 字符与个数的映射关系
         HashMap<Character, Integer> windowMap = new HashMap<>();
         HashMap<Character, Integer> needMap = new HashMap<>();
@@ -25,7 +21,8 @@ public class FindAllAnagramsInAString {
         int left = 0;
         int right = 0;
         int count = 0;
-
+        // 用于更新满足的窗口window的长度,如果是len一直是MAX_VALUE，说明没有满足的串
+        int len = Integer.MAX_VALUE;
         // 用于记录window串的起始位置， 返回 s[start, len]
         int start = 0;
 
@@ -44,9 +41,10 @@ public class FindAllAnagramsInAString {
 
             // 判断左侧窗口是否要收缩 收缩window的长度
             while (count == needMap.size()) {
-                // 记录result
-                if (right - left == t.length()) {
-                    res.add(left);
+                // 更新并记录最小覆盖子串的长度，起始位置start
+                if (right - left < len) {
+                    start = left;
+                    len = right - left;
                 }
                 // removeChar 是将移出窗口的字符
                 char removeChar = s.charAt(left);
@@ -62,15 +60,11 @@ public class FindAllAnagramsInAString {
                 }
             }
         }
-        return res;
+        return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
     }
 
     public static void main(String[] args) {
-        FindAllAnagramsInAString f = new FindAllAnagramsInAString();
-        List<Integer> anagrams = f.findAnagrams("abab", "ab");
-        for (Integer anagram : anagrams) {
-            System.out.println(anagram);
-        }
-
+        MinimumWindowSubstring m = new MinimumWindowSubstring();
+        System.out.println(m.minWindow("ADOBECODEBANC", "ABC"));
     }
 }
