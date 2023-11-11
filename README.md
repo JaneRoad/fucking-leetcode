@@ -1,5 +1,3 @@
-# 赞助鸣谢
-<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains Logo (Main) logo." >
 
 
 # 仓库介绍
